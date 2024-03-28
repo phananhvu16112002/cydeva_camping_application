@@ -1,10 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:cydeva_application/common/Colors/app_colors.dart';
 import 'package:cydeva_application/models/bottomnav_model.dart';
-import 'package:cydeva_application/screens/ChatPage/chatPage.dart';
-import 'package:cydeva_application/screens/HistoryPage/historyPage.dart';
-import 'package:cydeva_application/screens/HomePage/HomePageBody.dart';
+import 'package:cydeva_application/screens/HomePage/home_page_body.dart';
 import 'package:cydeva_application/screens/ProfilePage/ProfilePage.dart';
+import 'package:cydeva_application/screens/chat_page/chat_page.dart';
+import 'package:cydeva_application/screens/history_page/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';

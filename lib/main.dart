@@ -1,5 +1,5 @@
 import 'package:cydeva_application/screens/flash_page/splash_screen.dart';
-import 'package:cydeva_application/screens/HomePage/HomePage.dart';
+import 'package:cydeva_application/screens/HomePage/home_page.dart';
 import 'package:cydeva_application/screens/SignInPage/bloc/signin_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -2,7 +2,7 @@
 import 'package:cydeva_application/common/Colors/app_colors.dart';
 import 'package:cydeva_application/common/bases/custom_button.dart';
 import 'package:cydeva_application/common/bases/custom_text.dart';
-import 'package:cydeva_application/screens/HomePage/HomePage.dart';
+import 'package:cydeva_application/screens/HomePage/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
