@@ -1,10 +1,12 @@
-import 'package:cydeva_application/screens/SignInPage/OTPPage.dart';
-import 'package:cydeva_application/common/Colors/AppColors.dart';
-import 'package:cydeva_application/common/bases/CustomButton.dart';
-import 'package:cydeva_application/common/bases/CustomText.dart';
-import 'package:cydeva_application/common/bases/CustomTextField.dart';
+import 'package:cydeva_application/common/Colors/app_colors.dart';
+import 'package:cydeva_application/screens/SignInPage/otp_page.dart';
+
+import 'package:cydeva_application/common/bases/custom_button.dart';
+import 'package:cydeva_application/common/bases/custom_text.dart';
+import 'package:cydeva_application/common/bases/custom_text_field.dart';
 import 'package:cydeva_application/screens/SignInPage/bloc/signin_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,18 +57,74 @@ class _WelcomePageState extends State<WelcomePage> {
                         const SizedBox(
                           height: 4,
                         ),
-                        CustomTextField(
-                          controller: phoneNumberController,
-                          textInputType: TextInputType.phone,
-                          obscureText: false,
-                          suffixIcon: const IconButton(
-                              onPressed: null, icon: Icon(null)),
-                          hintText: 'Phone Number',
-                          prefixIcon: const Icon(null),
+                        // CustomTextField(
+                        //   // filteringTextInputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                        //   controller: phoneNumberController,
+                        //   textInputType: TextInputType.phone,
+                        //   obscureText: false,
+                        //   suffixIcon: const IconButton(
+                        //       onPressed: null, icon: Icon(null)),
+                        //   hintText: 'Phone Number',
+                        //   prefixIcon: const Icon(null),
+                        //   readOnly: false,
+                        //   width: double.infinity,
+                        //   height: 56,
+                        //   colorHintText: AppColors.neutral05,
+                        //   validator: (value) {
+                        //     if (value!.isEmpty) {
+                        //       return 'Phone number is required';
+                        //     } else {
+                        //       return null;
+                        //     }
+                        //   },
+                        //   onChanged: (value) {
+                        //     context
+                        //         .read<SigninBloc>()
+                        //         .add(PhoneNumberChanged(phoneNumber: value));
+                        //   },
+                        // ),
+                        TextFormField(
+                          maxLength: 10,
+                          
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          // cursorColor: Colors.black,
                           readOnly: false,
-                          width: double.infinity,
-                          height: 56,
-                          colorHintText: AppColors.neutral05,
+                          controller: phoneNumberController,
+                          keyboardType: TextInputType.phone,
+                          style: const TextStyle(
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15),
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            counterText: '',
+                              filled: true,
+                              fillColor: Colors.white,
+                              // isDense: true,
+                              hintStyle: TextStyle(
+                                  color: AppColors.neutral05, fontSize: 16),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 1, color: AppColors.neutral05),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8))),
+                              contentPadding: const EdgeInsets.all(20),
+                              suffixIcon: IconButton(
+                                  onPressed: () {}, icon: Icon(null)),
+                              hintText: 'Phone number', // change here hinttext
+                              enabledBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                  borderSide: BorderSide(
+                                      width: 1, color: AppColors.primary3)),
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(
+                                    width: 1, color: AppColors.neutral05),
+                              )),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Phone number is required';
@@ -74,6 +132,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               return null;
                             }
                           },
+
                           onChanged: (value) {
                             context
                                 .read<SigninBloc>()

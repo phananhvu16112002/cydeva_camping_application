@@ -1,4 +1,4 @@
-import 'package:cydeva_application/screens/FlashPage/SplashScreen.dart';
+import 'package:cydeva_application/screens/flash_page/splash_screen.dart';
 import 'package:cydeva_application/screens/HomePage/HomePage.dart';
 import 'package:cydeva_application/screens/SignInPage/bloc/signin_bloc.dart';
 import 'package:flutter/material.dart';

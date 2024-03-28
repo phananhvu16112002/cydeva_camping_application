@@ -1,6 +1,6 @@
-import 'package:cydeva_application/screens/SignInPage/Welcome.dart';
-import 'package:cydeva_application/common/Colors/AppColors.dart';
-import 'package:cydeva_application/common/bases/CustomText.dart';
+import 'package:cydeva_application/common/Colors/app_colors.dart';
+import 'package:cydeva_application/screens/SignInPage/welcome_page.dart';
+import 'package:cydeva_application/common/bases/custom_text.dart';
 import 'package:cydeva_application/screens/SignInPage/bloc/signin_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,13 +1,15 @@
 import 'dart:async';
 
+import 'package:cydeva_application/common/Colors/app_colors.dart';
 import 'package:cydeva_application/screens/HomePage/HomePage.dart';
-import 'package:cydeva_application/common/Colors/AppColors.dart';
-import 'package:cydeva_application/common/bases/CustomButton.dart';
-import 'package:cydeva_application/common/bases/CustomText.dart';
+
+import 'package:cydeva_application/common/bases/custom_button.dart';
+import 'package:cydeva_application/common/bases/custom_text.dart';
 import 'package:cydeva_application/screens/SignInPage/bloc/signin_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -129,32 +131,8 @@ class _OTPPageState extends State<OTPPage> {
             }
             // await _progressDialog.hide();
           } else if (state is VerifyFailed) {
-            showDialog<void>(
-              barrierColor: Colors.black.withOpacity(0.4),
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: Colors.white,
-                  title: const Text('Failed OTP'),
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: <Widget>[
-                        Text(state.message),
-                      ],
-                    ),
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+            await _progressDialog.hide();
+            failedDialog(context, state);
           } else {
             const Center(
               child: CircularProgressIndicator(),
@@ -173,7 +151,7 @@ class _OTPPageState extends State<OTPPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 20,
+                        height: 44,
                       ),
                       appBar(),
                       const SizedBox(
@@ -226,7 +204,7 @@ class _OTPPageState extends State<OTPPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                              'Resend the code after 0$minutesRemaining:${secondsRemaining} ')
+                              'Resend the code after 0$minutesRemaining:${secondsRemaining.toString().padLeft(2, '0')} ')
                         ],
                       ),
                       const SizedBox(height: 16),
@@ -237,9 +215,13 @@ class _OTPPageState extends State<OTPPage> {
                             borderColor: Colors.transparent,
                             textColor: Colors.white,
                             function: () async {
-                              _progressDialog.show();
-                              BlocProvider.of<SigninBloc>(context)
-                                  .add(VerifySubmitted(otpNumber: otpField));
+                              if (otpField.length == 6) {
+                                _progressDialog.show();
+                                BlocProvider.of<SigninBloc>(context)
+                                    .add(VerifySubmitted(otpNumber: otpField));
+                              } else {
+                                _showMyDialog();
+                              }
                             },
                             height: 52,
                             width: 342,
@@ -258,9 +240,11 @@ class _OTPPageState extends State<OTPPage> {
                               fontWeight: FontWeight.w400,
                               color: AppColors.primaryText),
                           InkWell(
-                            onTap: () {
-                              restartTimer();
-                            },
+                            onTap: canResend
+                                ? () {
+                                    restartTimer();
+                                  }
+                                : null,
                             child: const CustomText(
                                 message: "Resend ",
                                 fontSize: 16,
@@ -280,24 +264,53 @@ class _OTPPageState extends State<OTPPage> {
     );
   }
 
+  Future<void> failedDialog(BuildContext context, VerifyFailed state) {
+    return showDialog<void>(
+      barrierColor: Colors.black.withOpacity(0.4),
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: const Text('Failed OTP'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(state.message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('AlertDialog Title'),
+          backgroundColor: Colors.white,
+          title: const Text('Failed'),
           content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+                Text('Please check your OTP'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Approve'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -314,15 +327,13 @@ class _OTPPageState extends State<OTPPage> {
       height: 32,
       color: AppColors.backGroundColor,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.gray,
-            ),
+            child: SvgPicture.asset('assets/icons/back.svg')
           ),
           const SizedBox(width: 5),
           const Text('Back')

@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
+import 'package:cydeva_application/common/Colors/app_colors.dart';
 import 'package:cydeva_application/models/bottomnav_model.dart';
 import 'package:cydeva_application/screens/ChatPage/chatPage.dart';
 import 'package:cydeva_application/screens/HistoryPage/historyPage.dart';
 import 'package:cydeva_application/screens/HomePage/HomePageBody.dart';
-import 'package:cydeva_application/common/Colors/AppColors.dart';
 import 'package:cydeva_application/screens/ProfilePage/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';

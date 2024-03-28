@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cydeva_application/common/Colors/AppColors.dart';
-import 'package:cydeva_application/common/bases/CustomText.dart';
+import 'package:cydeva_application/common/Colors/app_colors.dart';
+
+import 'package:cydeva_application/common/bases/custom_text.dart';
 import 'package:cydeva_application/models/category_model.dart';
 import 'package:cydeva_application/models/guilde_model.dart';
 import 'package:cydeva_application/models/recommend_model.dart';
