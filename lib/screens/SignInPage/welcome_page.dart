@@ -84,8 +84,10 @@ class _WelcomePageState extends State<WelcomePage> {
                         //   },
                         // ),
                         TextFormField(
+                          onTapOutside: (event) {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
                           maxLength: 10,
-                          
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -99,11 +101,10 @@ class _WelcomePageState extends State<WelcomePage> {
                               fontSize: 15),
                           obscureText: false,
                           decoration: InputDecoration(
-                            counterText: '',
+                              counterText: '',
                               filled: true,
                               fillColor: Colors.white,
-                              // isDense: true,
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                   color: AppColors.neutral05, fontSize: 16),
                               border: const OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -112,22 +113,19 @@ class _WelcomePageState extends State<WelcomePage> {
                                       BorderRadius.all(Radius.circular(8))),
                               contentPadding: const EdgeInsets.all(20),
                               suffixIcon: IconButton(
-                                  onPressed: () {}, icon: Icon(null)),
-                              hintText: 'Phone number', // change here hinttext
-                              enabledBorder: const OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                  borderSide: BorderSide(
-                                      width: 1, color: AppColors.primary3)),
+                                  onPressed: () {}, icon: const Icon(null)),
+                              hintText: 'Phone number',
                               focusedBorder: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
                                 borderSide: BorderSide(
-                                    width: 1, color: AppColors.neutral05),
+                                    width: 1, color: AppColors.primary3),
                               )),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Phone number is required';
+                            } else if (value[0] != '0' || value.length < 10) {
+                              return 'Phone number is not available';
                             } else {
                               return null;
                             }
@@ -157,7 +155,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                                 value:
                                                     BlocProvider.of<SigninBloc>(
                                                         context),
-                                                child: OTPPage())));
+                                                child: const OTPPage())));
                               }
                             },
                             height: 52,

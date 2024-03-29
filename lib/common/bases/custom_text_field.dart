@@ -36,6 +36,9 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       // cursorColor: Colors.black,
       readOnly: readOnly,
       controller: controller,

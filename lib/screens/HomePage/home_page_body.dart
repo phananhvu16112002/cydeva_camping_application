@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cydeva_application/extensions/build_context.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HomePageBody extends StatefulWidget {
   const HomePageBody({super.key});
@@ -18,6 +19,9 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody> {
+   XFile? file;
+  // late AttendanceForm attendanceForm;
+  final ImagePicker _picker = ImagePicker();
   TextEditingController searchController = TextEditingController();
   List<String> imageUrls = [
     'assets/images/image.png',
@@ -72,7 +76,7 @@ class _HomePageBodyState extends State<HomePageBody> {
     return Scaffold(
       backgroundColor: AppColors.neutral02,
       body: SizedBox(
-        width: MediaQuery.of(context).size.width,
+        width: context.screenSize.width,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           child: Column(
@@ -767,6 +771,63 @@ class _HomePageBodyState extends State<HomePageBody> {
               borderRadius: BorderRadius.all(Radius.circular(32)),
               borderSide: BorderSide(width: 1, color: AppColors.borderColor),
             )),
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        file = pickedFile;
+      });
+    }
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Column(
+        children: <Widget>[
+          const Text(
+            'Choose Your Photo',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton.icon(
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                icon: const Icon(Icons.camera),
+                label: const Text('Gallery'),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                icon: const Icon(Icons.camera),
+                label: const Text('Gallery'),
+              ),
+              // const SizedBox(
+              //   width: 10,
+              // ),
+              // ElevatedButton.icon(
+              //   onPressed: () {
+              //     takePhoto(ImageSource.gallery);
+              //   },
+              //   icon: const Icon(Icons.camera),
+              //   label: const Text('Gallery'),
+              // ),
+            ],
+          )
+        ],
       ),
     );
   }

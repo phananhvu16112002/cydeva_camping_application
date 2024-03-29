@@ -120,6 +120,29 @@ class _OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.backGroundColor,
+        shadowColor: Colors.transparent,
+        leading: Container(
+            width: 5,
+            height: 5,
+            child: Container(
+                width: 20,
+                height: 20,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.arrow_back_ios_new_outlined,
+                      color: Colors.black),
+                ))),
+        titleSpacing: 0,
+        title: const CustomText(
+            message: 'Back',
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.black),
+      ),
       backgroundColor: AppColors.backGroundColor,
       body: BlocListener<SigninBloc, SigninState>(
         listener: (context, state) async {
@@ -130,130 +153,135 @@ class _OTPPageState extends State<OTPPage> {
                   MaterialPageRoute(builder: (builder) => const HomePage()));
             }
             // await _progressDialog.hide();
-          } else if (state is VerifyFailed) {
+          }
+          if (state is VerifyFailed) {
             await _progressDialog.hide();
             failedDialog(context, state);
-          } else {
-            const Center(
-              child: CircularProgressIndicator(),
-            );
           }
         },
         child: BlocBuilder<SigninBloc, SigninState>(
           builder: (context, state) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 44,
-                      ),
-                      appBar(),
-                      const SizedBox(
-                        height: 56,
-                      ),
-                      const CustomText(
-                          message: 'OTP Verification',
-                          fontSize: 32,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.neutral09),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      CustomText(
-                          message: description,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.neutral07),
-                      const SizedBox(
-                        height: 56,
-                      ),
-                      OTPTextField(
-                        controller: otpFieldController,
-                        textFieldAlignment: MainAxisAlignment.spaceEvenly,
-                        inputFormatter: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        length: 6,
-                        width: MediaQuery.of(context).size.width,
-                        otpFieldStyle: OtpFieldStyle(
-                            borderColor: AppColors.neutral06,
-                            enabledBorderColor: AppColors.primary3),
-                        outlineBorderRadius: 8,
-                        keyboardType: TextInputType.phone,
-                        fieldWidth: 50,
-                        style: const TextStyle(
-                            fontSize: 24,
+            return GestureDetector(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // const SizedBox(
+                        //   height: 44,
+                        // ),
+                        // appBar(),
+                        const SizedBox(
+                          height: 56,
+                        ),
+                        const CustomText(
+                            message: 'OTP Verification',
+                            fontSize: 32,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.primary3),
-                        fieldStyle: FieldStyle.box,
-                        onChanged: (pin) {
-                          otpField = pin;
-                          context
-                              .read<SigninBloc>()
-                              .add(OTPNumberChanged(otpNumber: pin));
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                              'Resend the code after 0$minutesRemaining:${secondsRemaining.toString().padLeft(2, '0')} ')
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Center(
-                        child: CustomButton(
-                            buttonName: 'Verify',
-                            backgroundColorButton: AppColors.primary3,
-                            borderColor: Colors.transparent,
-                            textColor: Colors.white,
-                            function: () async {
-                              if (otpField.length == 6) {
-                                _progressDialog.show();
-                                BlocProvider.of<SigninBloc>(context)
-                                    .add(VerifySubmitted(otpNumber: otpField));
-                              } else {
-                                _showMyDialog();
-                              }
-                            },
-                            height: 52,
-                            width: 342,
+                            color: AppColors.neutral09),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        CustomText(
+                            message: description,
                             fontSize: 16,
-                            colorShadow: Colors.transparent),
-                      ),
-                      const SizedBox(
-                        height: 321,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CustomText(
-                              message: "Didn't recived code ? ",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.primaryText),
-                          InkWell(
-                            onTap: canResend
-                                ? () {
-                                    restartTimer();
-                                  }
-                                : null,
-                            child: const CustomText(
-                                message: "Resend ",
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primary3),
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.neutral07),
+                        const SizedBox(
+                          height: 56,
+                        ),
+                        OTPTextField(
+                          controller: otpFieldController,
+                          textFieldAlignment: MainAxisAlignment.spaceEvenly,
+                          inputFormatter: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          length: 6,
+                          width: MediaQuery.of(context).size.width,
+                          otpFieldStyle: OtpFieldStyle(
+                            focusBorderColor: AppColors.primary3,
+                            borderColor: AppColors.neutral06,
                           ),
-                        ],
-                      )
-                    ],
+                          outlineBorderRadius: 8,
+                          keyboardType: TextInputType.phone,
+                          fieldWidth: 50,
+                          style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary3),
+                          fieldStyle: FieldStyle.box,
+                          onChanged: (pin) {
+                            otpField = pin;
+                            context
+                                .read<SigninBloc>()
+                                .add(OTPNumberChanged(otpNumber: pin));
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                'Resend the code after 0$minutesRemaining:${secondsRemaining.toString().padLeft(2, '0')} ')
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Center(
+                          child: CustomButton(
+                              buttonName: 'Verify',
+                              backgroundColorButton: AppColors.primary3,
+                              borderColor: Colors.transparent,
+                              textColor: Colors.white,
+                              function: () async {
+                                if (otpField.length == 6) {
+                                  _progressDialog.show();
+                                  BlocProvider.of<SigninBloc>(context).add(
+                                      VerifySubmitted(otpNumber: otpField));
+                                } else {
+                                  _showMyDialog();
+                                }
+                              },
+                              height: 52,
+                              width: 342,
+                              fontSize: 16,
+                              colorShadow: Colors.transparent),
+                        ),
+                        const SizedBox(
+                          height: 321,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const CustomText(
+                                message: "Didn't recived code ? ",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.primaryText),
+                            InkWell(
+                              onTap: canResend
+                                  ? () {
+                                      restartTimer();
+                                    }
+                                  : null,
+                              child: canResend
+                                  ? const CustomText(
+                                      message: "Resend ",
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.primary3)
+                                  : Container(),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -321,26 +349,25 @@ class _OTPPageState extends State<OTPPage> {
     );
   }
 
-  Widget appBar() {
-    return Container(
-      width: 342,
-      height: 32,
-      color: AppColors.backGroundColor,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: SvgPicture.asset('assets/icons/back.svg')
-          ),
-          const SizedBox(width: 5),
-          const Text('Back')
-        ],
-      ),
-    );
-  }
+  // Widget appBar() {
+  //   return Container(
+  //     width: 342,
+  //     height: 32,
+  //     color: AppColors.backGroundColor,
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         InkWell(
+  //             onTap: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: SvgPicture.asset('assets/icons/back.svg')),
+  //         const SizedBox(width: 5),
+  //         const Text('Back')
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget cusTomText(
       String message, double fontSize, FontWeight fontWeight, Color color) {

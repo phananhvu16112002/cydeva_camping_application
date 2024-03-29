@@ -30,10 +30,8 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
       final apiService = API(Dio(BaseOptions(contentType: 'application/json')));
       await apiService.verifyOTP({"code": event.otpNumber}).then((value) {
         if (value.statusCode == 200) {
-          print('aloalo success');
           emit(VerifySuccess(message: value.message));
         } else if (value.statusCode == 406) {
-          print('aloalo failed');
           emit(VerifyFailed(message: value.message));
         } else {
           emit(VerifyLoading());
